@@ -1,6 +1,7 @@
 #include <LiquidCrystal.h>
 LiquidCrystal lcd(13, 12, 11, 10, 9, 8);
 int signalPing = 5;
+long cm;
 
 void setup() {
   lcd.begin(16, 2);
@@ -13,12 +14,21 @@ void loop()
   
   lcd.setCursor(0,1);
   lcd.print("Jarak");
-  lcd.setCursosr(6,1);
+  lcd.setCursor(6,1);
   lcd.print(cm);
   print_unit_cm(cm);
 }
 
-long read)sesor_ultrasonic()
+long durationToDistance(long duration)
+{
+  long hasil;
+  hasil = (340 * duration / 10000 / 2);
+  return (hasil);
+}
+
+ 
+
+long read_sensor_ultrasonic()
 {
   long duration, distance;
   
@@ -35,14 +45,28 @@ long read)sesor_ultrasonic()
   return distance;
 }
 
-long durationToDistance(long duration);
+void print_unit_cm(long cm) 
 {
-  long hasil;
-  hasil = 340 * duration / 10000 / 2;
+  int jumlahdigit = countdigit(cm);
   
-  return hasil;
+  if (jumlahdigit == 2) {
+    lcd.setCursor(8, 1);
+    lcd.print("cm  ");
+  }
+  else if(jumlahdigit == 3) {
+    lcd.setCursor(9, 1);
+    lcd.print("cm  ");
+  }
 }
 
-void print_unit_cm(long cm
-
-    
+int countdigit(long input)
+{
+  int count = 0;
+  
+  while (input != 0){
+    input = input / 10;
+    count++;
+  }
+  
+  return count;
+}
